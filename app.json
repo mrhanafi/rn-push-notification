@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "pushNoti",
-    "slug": "pushNoti",
+    "slug": "rn-pushnoti",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,6 +22,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "886c71b2-3bbb-4bcb-a40e-e0a444abbba5"
+      }
+    },
+    "owner": "markonah"
   }
 }
