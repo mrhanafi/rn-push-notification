@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Button, Platform, StyleSheet, Text, View } from 'react-native';
+import { Button, Platform, StyleSheet, Text, ToastAndroid, View } from 'react-native';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
@@ -48,6 +48,7 @@ export default function App() {
       }
       if (finalStatus !== 'granted') {
         alert('Failed to get push token for push notification!');
+        ToastAndroid.show('Failed to get push token for push notification!',ToastAndroid.LONG)
         return;
       }
       // Learn more about projectId:
@@ -77,6 +78,7 @@ export default function App() {
 
   const sendNotification = async () => {
     console.log("Sending Push notification...")
+    ToastAndroid.show('Sending Push Notification...',ToastAndroid.SHORT)
     
     const message = {
       to: expoPushToken,
@@ -84,20 +86,27 @@ export default function App() {
       title: "My firsth push notification",
       body: "This is the first push notification thru expo"
     }
-    await fetch("https://exp.host/--/api/v2/push/send",{
+    await fetch("https://exp.host/--/api/v2/push/send?useFcmV1=true",{
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        accept: "application/json"
+        accept: "application/json",
+        "accept-encoding": "gzip, deflate",
+        "content-type": "application/json",
       },
       body:JSON.stringify(message),
     })
+    // .then(res => {
+    //   ToastAndroid.show(res.data.status,ToastAndroid.SHORT)
+    // })
+    // .catch((err) => ToastAndroid.show(err.data.detail.error,ToastAndroid.SHORT));
   }
   return (
     
     <View style={{ marginTop: 100,alignItems:'center' }}>
       <Text style={{ marginVertical:30 }}>Expo Push Notifications</Text>
       <Button title='Send Push Notification' onPress={sendNotification}>Send Push Notification</Button>
+      <Text>{expoPushToken}</Text>
     </View>
   );
 }
